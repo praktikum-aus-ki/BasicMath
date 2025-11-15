@@ -8,8 +8,8 @@ from chooseNumberScreen import ChoosenNumberScreen
 
 
 class Game():
+    choosenNum: int = 0
     state = gameState().MENU
-    choosenNum = None
     gameMode = Number(1, 1, 8)
 
     def __init__(self):

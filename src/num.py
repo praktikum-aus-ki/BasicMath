@@ -1,7 +1,7 @@
 class Number():
-    value = None
-    min = None
-    max = None
+    value: int = 0
+    min: int = 0
+    max: int = 0
 
     def __init__(self, value, min, max):
         self.value = value
@@ -22,5 +22,5 @@ class Number():
     def decrNum(self):
         self.setNum(self.getNum() - 1)
 
-    def getNum(self):
+    def getNum(self) -> int:
         return self.value

@@ -16,8 +16,15 @@ COLOR_CODES = [
     [(18, 46, 137), (113, 115, 25)],
     [(143, 114, 41), (63, 1, 106)],
     [(110, 110, 15), (145, 120, 43)],
-    [(161, 104, 35), (161, 104, 35)]
+    [(161, 104, 35), (65, 144, 58)]
 ]
+
+POSITIONS = {
+    "gameMode": (SCREEN_WIDTH /  10, SCREEN_HEIGHT/ 10),
+    "boardMenu": [(SCREEN_WIDTH / 5, SCREEN_HEIGHT / 5), (SCREEN_WIDTH / 5 , SCREEN_HEIGHT / 4)],
+    "boardPlay": [(SCREEN_WIDTH / 5, SCREEN_HEIGHT / 5), (SCREEN_WIDTH / 5 , SCREEN_HEIGHT / 4)],
+    "result": (SCREEN_WIDTH / 5 , SCREEN_HEIGHT / 2)
+}
 
 class gameState():
     MENU = 0
