@@ -5,18 +5,21 @@ from random import randrange
 from util import Util
 
 class PlayingScreen():
+    NumArr = None
     playing: int = 1
     choosenNum: int = 0
-    currentNumPos: int = 0
     points: int = 0
     gameMode = Number(1, 1, 8)
-    NumArr = None
+    currentNumPos = Number(0, 0, 5)
+    operation = None
 
     def __init__(self, gameMode, choosenNum):
         self.gameMode = gameMode
-        self.choosenNum = choosenNum
-        self.randomNum = Util.genRandomNum(gameMode)
-        self.choosenNum = randrange(100) if self.gameMode.getNum() >= 4 else choosenNum
+        self.operation = OPERATIONS[((gameMode.getNum() - 1) % 4)]
+        self.choosenNum = randrange(100) if self.gameMode.getNum() > 4 else choosenNum
+        tmp1 = 10 if gameMode.getNum() < 4 else 100
+        tmp2 = choosenNum if self.operation[1] == "-" or self.operation[1] == "-" else tmp1
+        self.randomNum = Util.genRandomNum(gameMode, tmp2)
         self.fillArr()
 
     def fillArr(self):
@@ -27,25 +30,23 @@ class PlayingScreen():
 
         match event.key:
             case pygame.K_LEFT:
-                self.currentNumPos -= 1
+                self.currentNumPos.decrNum()
             case pygame.K_RIGHT:
-                self.currentNumPos += 1
+                self.currentNumPos.incrNum()
             case pygame.K_DOWN:
-                self.NumArr[self.currentNumPos].decrNum()
+                self.NumArr[self.currentNumPos.getNum()].decrNum()
             case pygame.K_UP:
-                self.NumArr[self.currentNumPos].incrNum()
+                self.NumArr[self.currentNumPos.getNum()].incrNum()
             case pygame.K_RETURN:
                 if self.playing <= 10:
-                    print(self.NumArr)
-                    int_list = [i.getNum() for i in self.NumArr]
+                    int_list = [self.NumArr[i].getNum() for i in range(4)]
                     result = int("".join(map(str, int_list)))
-                    print(result)
-                    operation = OPERATIONS[(self.gameMode.getNum() - 1) % 4]
 
-                    if eval(str(self.choosenNum) + operation + str(self.randomNum)) == result:
-                        points += 1
+                    if int(eval(str(self.choosenNum) + self.operation[1] + str(self.randomNum))) == result:
+                        self.points += 1
+                        print("RIGHT!")
                     
-                    self.randomNum = Util.genRandomNum(self.gameMode)
+                    self.randomNum = Util.genRandomNum(self.gameMode, self.choosenNum)
                     self.playing += 1
                     self.fillArr()
                 else:
@@ -61,10 +62,13 @@ class PlayingScreen():
 
         screen.blit(font.render(str(self.choosenNum), True, textcolor), pos[0])
         screen.blit(font.render(str(self.randomNum), True, textcolor), pos[1])
-        
+        screen.blit(font.render(str(self.operation[0]), True, textcolor), (0.75 * pos[1][0], pos[1][1]))
+        screen.blit(font.render("_______", True, textcolor), (0.5 * pos[1][0], 1.25 * pos[1][1]))
+
         for i, p in enumerate(self.NumArr):
             number = p.getNum()
 
-            screen.blit(font.render(str(number), True, textcolor), (i * posResult[0] * (1/6), posResult[1]))
+            screen.blit(font.render(str(number), True, textcolor), (25 * i + pos[1][0] / 2, 1.5 * pos[1][1]))
 
+        screen.blit(font.render("_", True, textcolor), (25 * self.currentNumPos.getNum() + pos[1][0] / 2, 1.55 * pos[1][1]))
         pygame.display.update()

@@ -2,10 +2,10 @@ SCREEN_WIDTH: int = 900
 SCREEN_HEIGHT: int = 600
 
 OPERATIONS = [
-    "+",
-    "-",
-    "*",
-    "/"
+    ("+", "+"),
+    ("-", "-"),
+    ("x", "*"),
+    ("÷", "/")
 ]
 
 COLOR_CODES = [
