@@ -20,8 +20,10 @@ class ChoosenNumberScreen():
         match event.key:
             case pygame.K_DOWN:
                 self.choosenNum.decrNum()
+                self.choosenNum.changeSet()
             case pygame.K_UP:
                 self.choosenNum.incrNum()
+                self.choosenNum.changeSet()
             case pygame.K_RETURN:
                 state = gameState().PLAYING
 
@@ -33,8 +35,12 @@ class ChoosenNumberScreen():
         pos = POSITIONS["boardPlay"]
 
         number = self.choosenNum.getNum()
-        
-        screen.blit(font.render(str(number), True, textcolor), pos[0])
+
+        if self.choosenNum.isSet:
+            screen.blit(font.render(str(number), True, textcolor), pos[0])
+
+        screen.blit(font.render("_", True, textcolor), (pos[0][0], 1 + pos[0][1]))
+
         screen.blit(font.render("9", True, textcolor), pos[1])
         screen.blit(font.render(str(self.operation[0]), True, textcolor), (0.75 * pos[1][0], pos[1][1]))
         screen.blit(font.render("_______", True, textcolor), (0.5 * pos[1][0], 1.25 * pos[1][1]))

@@ -2,6 +2,7 @@ class Number():
     value: int = 0
     min: int = 0
     max: int = 0
+    isSet: bool = False
 
     def __init__(self, value, min, max):
         self.value = value
@@ -24,3 +25,6 @@ class Number():
 
     def getNum(self) -> int:
         return self.value
+    
+    def changeSet(self):
+        self.isSet = True
