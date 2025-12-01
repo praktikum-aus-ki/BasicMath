@@ -1,5 +1,5 @@
 import pygame
-from const import gameState, COLOR_CODES, OPERATIONS, POSITIONS
+from const import gameState, COLOR_CODES, OPERATIONS, POSITIONS, SCALINGFACTOR
 from num import Number
 from random import randrange
 from util import Util
@@ -12,6 +12,7 @@ class PlayingScreen():
     gameMode = Number(1, 1, 8)
     currentNumPos = Number(0, 0, 5)
     operation = None
+    sprites, symbols, underscores = Util.load_digit_sprites("/home/fuge/Downloads/JAXAtari_BasicMath/scripts/BasicMath_screenshots")
 
     def __init__(self, gameMode, choosenNum):
         self.gameMode = gameMode
@@ -65,21 +66,19 @@ class PlayingScreen():
         return state
     
     def draw(self, screen):
-        font = pygame.font.SysFont(None, 50)
-        pos = POSITIONS["boardPlay"]
-        posResult = POSITIONS["result"]
         textcolor = COLOR_CODES[self.gameMode.getNum() - 1][1]
+        drawn = [self.sprites[str(self.choosenNum)], self.sprites[str(self.randomNum)]]
 
-        screen.blit(font.render(str(self.choosenNum), True, textcolor), pos[0])
-        screen.blit(font.render(str(self.randomNum), True, textcolor), pos[1])
-        screen.blit(font.render(str(self.operation[0]), True, textcolor), (0.75 * pos[1][0], pos[1][1]))
-        screen.blit(font.render("_______", True, textcolor), (0.5 * pos[1][0], 1.25 * pos[1][1]))
+        for i in range(6):
+            if self.NumArr[self.currentNumPos.getNum()].isSet:
+                Util.draw_sprite(screen, self.sprites[str(self.NumArr[i].getNum())], textcolor, (35 * SCALINGFACTOR + self.currentNumPos.getNum() * 15 * SCALINGFACTOR, POSITIONS["num2"][1]))
 
-        for i, p in enumerate(self.NumArr):
-            if p.isSet:
-                number = p.getNum()
+        for i in range(2):
+            Util.draw_sprite(screen, drawn[i], textcolor, POSITIONS["num" + str(i)])
 
-                screen.blit(font.render(str(number), True, textcolor), (25 * i + pos[1][0] / 2, 1.5 * pos[1][1]))
+        for i in range(2):
+            Util.draw_sprite(screen, self.underscores[str(i)], textcolor, POSITIONS["bar" + str(i)])
 
-        screen.blit(font.render("_", True, textcolor), (25 * self.currentNumPos.getNum() + pos[1][0] / 2, 1.55 * pos[1][1]))
+        Util.draw_sprite(screen, self.symbols[str((self.gameMode.getNum() - 1) % 4)], textcolor, POSITIONS["symbol"])
+
         pygame.display.update()

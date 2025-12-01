@@ -1,12 +1,14 @@
 import pygame
 from num import Number
 from const import gameState, COLOR_CODES, POSITIONS, OPERATIONS
+from util import Util
 
 class MenuScreen():
     choosenNum: int = 0
     currentNumPos: int = 0
     gameMode = Number(1, 1, 8)
     operation = OPERATIONS[((gameMode.getNum() - 1) % 4)]
+    sprites, symbols, underscores = Util.load_digit_sprites("/home/fuge/Downloads/JAXAtari_BasicMath/scripts/BasicMath_screenshots")
 
     def __init__(self):
         pass
@@ -30,18 +32,16 @@ class MenuScreen():
         return state
     
     def draw(self, screen):
-        font = pygame.font.SysFont(None, 50)
         textcolor = COLOR_CODES[self.gameMode.getNum() - 1][1]
         number = self.gameMode.getNum()
-        text = font.render(str(number), True, textcolor)
-        screen.blit(text, POSITIONS["gameMode"])
-
         nums = (1, 9) if self.gameMode.getNum() < 5 else (1, 1)
-        pos = POSITIONS["boardMenu"]
+        drawn = [self.sprites[str(number)], self.sprites[str(nums[0])], self.sprites[str(nums[1])]]
 
-        for i, p in enumerate(pos):
-            screen.blit(font.render(str(nums[i]), True, textcolor), p)
+        Util.draw_sprite(screen, drawn[0], textcolor, (POSITIONS["symbol"][0], POSITIONS["num0"][1]))
 
-        screen.blit(font.render(str(self.operation[0]), True, textcolor), (0.75 * pos[1][0], pos[1][1]))
+        for i in range(1, 3):
+            Util.draw_sprite(screen, drawn[i], textcolor, POSITIONS["num" + str(i)])
+
+        Util.draw_sprite(screen, self.symbols[str((self.gameMode.getNum() - 1) % 4)], textcolor, (POSITIONS["symbol"][0], POSITIONS["symbol"][1]))
 
         pygame.display.update()

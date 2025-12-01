@@ -1,11 +1,13 @@
 import pygame
 from const import gameState, COLOR_CODES, POSITIONS, OPERATIONS
 from num import Number
+from util import Util
 
 class ChoosenNumberScreen():
     choosenNum = Number(0, 0, 9)
     gameMode = Number(1, 1, 8)
     operation = None
+    sprites, symbols, underscores = Util.load_digit_sprites("/home/fuge/Downloads/JAXAtari_BasicMath/scripts/BasicMath_screenshots")
 
     def __init__(self, gameMode):
         self.gameMode = gameMode
@@ -30,19 +32,14 @@ class ChoosenNumberScreen():
         return state
     
     def draw(self, screen):
-        font = pygame.font.SysFont(None, 50)
         textcolor = COLOR_CODES[self.gameMode.getNum() - 1][1]
-        pos = POSITIONS["boardPlay"]
+        drawn = [self.sprites[str(self.choosenNum.getNum())], self.sprites["9"]] if self.choosenNum.isSet else [self.underscores["0"], self.sprites["9"]]
 
-        number = self.choosenNum.getNum()
+        for i in range(2):
+            Util.draw_sprite(screen, drawn[i], textcolor, POSITIONS["num" + str(i)])
 
-        if self.choosenNum.isSet:
-            screen.blit(font.render(str(number), True, textcolor), pos[0])
+        Util.draw_sprite(screen, self.underscores["1"], textcolor, POSITIONS["bar1"])
+        Util.draw_sprite(screen, self.symbols[str((self.gameMode.getNum() - 1) % 4)], textcolor, POSITIONS["symbol"])
 
-        screen.blit(font.render("_", True, textcolor), (pos[0][0], 1 + pos[0][1]))
 
-        screen.blit(font.render("9", True, textcolor), pos[1])
-        screen.blit(font.render(str(self.operation[0]), True, textcolor), (0.75 * pos[1][0], pos[1][1]))
-        screen.blit(font.render("_______", True, textcolor), (0.5 * pos[1][0], 1.25 * pos[1][1]))
-        
         pygame.display.update()

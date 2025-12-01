@@ -1,5 +1,4 @@
 import pygame, sys
-import random
 from num import Number
 from const import gameState, SCREEN_HEIGHT, SCREEN_WIDTH, COLOR_CODES
 from menuScreen import MenuScreen
@@ -17,7 +16,6 @@ class Game():
         pygame.display.set_caption("Basic Math")
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         self.clock = pygame.time.Clock()
-        self.font = pygame.font.Font(None, 36)
 
     def play(self):
         running = True
