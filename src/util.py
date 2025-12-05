@@ -5,9 +5,9 @@ import os
 
 class Util:
     def genRandomNum(gameMode, num) -> int:
-        tmp = randrange(10) if gameMode.getNum() < 5 else randrange(100)
+        tmp = randrange(10) if gameMode < 5 else randrange(100)
         while tmp > num or tmp < 1:
-            tmp = randrange(10) if gameMode.getNum() < 5 else randrange(100)
+            tmp = randrange(10) if gameMode < 5 else randrange(100)
         return tmp
     
     def load_digit_sprites(folder):
@@ -37,7 +37,8 @@ class Util:
         return scaled_sprite
     
     def draw_sprite(screen, drawn, color, position):
-        drawn_surface = drawn.convert_alpha()
-        drawn_surface.fill(color + (0,), special_flags=pygame.BLEND_RGBA_ADD)
-        scaled = Util.scale_sprite(drawn_surface)
+        tinted = drawn.copy()
+        tinted.fill((0, 0, 0, 255), special_flags=pygame.BLEND_RGB_MULT)
+        tinted.fill(color + (255,), special_flags=pygame.BLEND_RGB_ADD)
+        scaled = Util.scale_sprite(tinted)
         screen.blit(scaled, position)

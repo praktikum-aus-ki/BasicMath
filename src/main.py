@@ -14,5 +14,4 @@ def save_npy_as_png():
         img.save(os.path.join(dirname, cur_dir.replace(".npy", ".png")))
 
 if __name__ == "__main__":
-    save_npy_as_png()
     Game().play()

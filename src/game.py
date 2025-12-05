@@ -8,8 +8,8 @@ from chooseNumberScreen import ChoosenNumberScreen
 
 class Game():
     choosenNum: int = 0
+    gameMode: int = 1
     state = gameState().MENU
-    gameMode = Number(1, 1, 8)
 
     def __init__(self):
         pygame.init()
@@ -22,7 +22,7 @@ class Game():
         gameScreen = MenuScreen()
 
         while running:
-            colorCode = COLOR_CODES[self.gameMode.getNum() - 1]
+            colorCode = COLOR_CODES[self.gameMode - 1]
             self.screen.fill(colorCode[0])
 
             for event in pygame.event.get():
