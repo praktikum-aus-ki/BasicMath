@@ -10,7 +10,7 @@ class PlayingScreen():
     choosenNum: int = 0
     points: int = 0
     gameMode: int = 1
-    currentNumPos: int = 3
+    currentNumPos: int = 2
     operation = None
     sprites, symbols, underscores = Util.load_digit_sprites("/home/fuge/Downloads/JAXAtari_BasicMath/scripts/BasicMath_screenshots")
 
@@ -40,20 +40,18 @@ class PlayingScreen():
                 self.NumArr[self.currentNumPos].incrNum()
             case pygame.K_RETURN:
                 if self.playing <= 10:
-                    int_list = [self.NumArr[i].getNum() for i in range(4)]
-                    remainder_list = [self.NumArr[i].getNum() for i in range(4, 6)]
+                    int_list = [self.NumArr[i].getNum() for i in range(3) if self.NumArr[i].getNum() is not None]
+                    remainder_list = [self.NumArr[i].getNum() for i in range(3, 6) if self.NumArr[i].getNum() is not None]
 
                     result = int("".join(map(str, int_list)))
-                    remainder = int("".join(map(str, remainder_list))) if self.operation else 0
+                    remainder = int("".join(map(str, remainder_list))) if self.operation == ("÷", "/") else 0
 
                     starterBool = int(eval(str(self.choosenNum) + self.operation[1] + str(self.randomNum))) == result
                     endBool = int(eval(str(self.choosenNum) + "%" + str(self.randomNum))) == remainder
                     isRight = starterBool and endBool if self.operation[1] == "/" else endBool
 
                     if isRight:
-                        print(self.operation[1])
                         self.points += 1
-                        print("RIGHT!")
 
                     self.choosenNum = randrange(100) if self.gameMode > 4 else self.choosenNum
                     self.randomNum = Util.genRandomNum(self.gameMode, self.choosenNum)
